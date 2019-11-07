@@ -36,17 +36,16 @@ class UserDAO:
         sql = ("INSERT INTO " +
                "user(uuid, name, account, passwd, level, chk_email, timestamp) " +
                "VALUES " +
-               "({0}, {1}, {2}, {3}, {4}, {5}, {6})".format(
-                   "'" + user_uuid + "'",
-                   "'" + user.name + "'",
-                   "'" + user.account + "'",
-                   "'" + user.password + "'",
-                   user.level,
-                   user.chk_email,
-                   int(datetime.datetime.now().timestamp()))
-               )
-        self.cursor.execute(sql)
-
+               "(%s, %s, %s, %s, %s, %s, %s)")
+        self.cursor.execute(sql, (user_uuid,
+                                  user.name,
+                                  user.account,
+                                  user.password,
+                                  user.level,
+                                  user.chk_email,
+                                  int(datetime.datetime.now().timestamp())
+                                  )
+                            )
         self.conn.commit()
 
     # Read User
@@ -57,13 +56,16 @@ class UserDAO:
         return self.readUser('uuid', _uuid)
 
     def readUser(self, key, value):
-        sql = "SELECT * from user WHERE {0}='{1}'".format(key, value)
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        sql = "SELECT * from user WHERE {0}=%s".format(key)
+        execute_result = self.cursor.execute(sql, value)
+        result = self.cursor.fetchone()
         user = None
-        if results:
-            user = User(results[0][0], results[0][1], results[0][2],
-                        results[0][3], results[0][4], results[0][5], results[0][6])
+        if execute_result != 0:
+            user = User(result[1], result[2], result[3], result[0],
+                        result[4], result[5], result[6])
+            print(user.password, user.account)
+        else:
+            return None
         return user
 
     # Update User

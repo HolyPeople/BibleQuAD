@@ -231,3 +231,8 @@ $RECYCLE.BIN/
 
 #mysql conf
 database.conf
+
+# Test script
+Test/
+
+.hashsalt
