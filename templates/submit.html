@@ -1,113 +1,41 @@
-<!DOCTYPE html> <html lang="kr">
-<head> <meta charset="UTF-8">
-<title>BQuAD Submit Page</title>
-<script src="../static/script/jquery-3.4.1.js"></script> <script src="../static/script/wfsel.js"></script>
-
-<style>
-#context { padding:10px; margin: 10px; text-align: left; background-color: #dcdcdc; border-radius:5px}
-.qa { margin: 10px; width: 70%; float: left;  }
-.description { float : right; }
-#id {
-  font-family: Helvetica;
-  font-size: 28px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  text-align: left;
-  color: #202124;
-  margin-botton:3px;
-}
-#outLine{
-  font-family: Helvetica;
-  font-size: 40px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #202124;
-}
-.container {
- padding:10px; margin: 20px;
-}
-.input {
-  width: 47px;
-  height: 28px;
-  font-family: Helvetica;
-  font-size: 19px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 0.95;
-  letter-spacing: normal;
-  text-align: left;
-  color: #7e57c2;
-}
-.text{
-  border-radius: 3px;
-  border: solid 2px #ebeded;
-  background-color: #ffffff;
-}
-.description {
-  font-family: Helvetica;
-  font-size: 13px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.54;
-  letter-spacing: normal;
-  text-align: left;
-  color: #a6adb4;
-  margin: 10px;
-}
-#submit{
-  width: 100px;
-  height: 30px;
-  background-color: #7e57c2;
-  margin-top:10px;
-  border:none;
-  border-radius:4px;
-  float: right;
-
-  font-family: Lato;
-  font-size: 14px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.21;
-  letter-spacing: normal;
-  text-align: center;
-  color: #f6f8f9;
-}
-#submit:hover{
-  background-color: #9575cd ;
-}
-
-
-</style>
-
-<script> function drag() { let str = wfSel.getTEXT(); let strr = replaceAll(str , '.', ''); let string = $.trim(strr); wfSel.replace('####'); let index = $('#context').text().indexOf('####'); let a = $('#context').text(); let t = str.indexOf(string); a = a.replace('####', str); $('#context').text(a); $('input#answer').val(string); $('#answer_start').val(index + t); } function replaceAll(str, searchStr, replaceStr) { return str.split(searchStr).join(replaceStr); } function focus_move(event) { if(event.keyCode===13) { $('#answer').focus(); } } </script>
-</head>
-
-<body>
-<div class="container">
-<div id="id">{{id_}}</div>
-<div id="outLine">{{ outLine }}</div>
-<br>
-<div id="context" onmouseup="drag()">{{paragraph}}</div>
-<div class="qa"> <form action="/send" method="post">
-<label class="input">질문 <br> <input class="text" id="question" type="text" name="question" size="50" value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요"></label>
-<br><br>
-<label class="input">정답 <br> <input class="text" id="answer" type="text" name="answer" size="50" readonly="true" value="" onkeypress="if(event.keyCode===13 && ($('#question').val() !== '' && $('#answer').val() !== '')){if($('#answer_start').val() !== ''){submit()} else{alert('정답은 드래그하여 선택해 주세요')}}else{alert('질문 또는 정답을 입력해 주세요!')}" placeholder="정답을 드래그하여 선택해주세요"></label>
-</div>
-<br>
-<!-- <input class="btn" type="submit" value="제출" onclick="submit()"> --> </form>
-<br>
-
-<div class="description">
-질문을 입력합니다. 정답을 입력할 떄는 문단에서 드래그하여 선택합니다. 제출은 Enter 입니다. 질문은 의문형이여야 합니다.
-<div> <button id="submit">제출하기</button> </div>
-</div>
-</div>
-</body>
+<!DOCTYPE html>
+<html lang="kr">
+    <head>
+        <meta charset="UTF-8">
+        <title>BQuAD Submit Page</title>
+        <link rel="stylesheet" type="text/css" href="../static/style/submit.css"/>
+        <script src="../static/script/jquery-3.4.1.min.js"></script>
+        <script src="../static/script/submit/submit.js"></script>
+    </head>
+    <body> 
+        <div class="container">
+            <span id="id">{{id_}} : </span>
+            <span id="outLine">{{ outLine }}</span>
+            <br>
+            <div id="context">{{paragraph}}</div>
+            <div class="qa">
+                <form action="/send" method="post">
+                    <label class="input">
+                        질문 <br>
+                        <input class="text" id="question" type="text" name="question"
+                            size="50" value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요">
+                    </label>
+                    <br>
+                    <br>
+                    <label for="answer">
+                        정답 <br>
+                        </label><input class="text" id="answer" type="text" name="temp" size="50"
+                             readonly="false" placeholder="정답을 드래그하여 선택해주세요" >
+                        <button type="button" onclick="erase()"> 지우기 </button>
+                        <button type="button" onclick="recover()"> 되돌리기 </button>
+            <div class="description">
+                질문을 입력합니다. 정답을 입력할 떄는 문단에서 드래그하여 선택합니다. 제출은 Enter 입니다. 질문은 의문형이여야 합니다. 
+            <div>
+                <button id="submit">제출하기</button>
+            </div>
+            </div>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>

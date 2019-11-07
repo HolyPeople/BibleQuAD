@@ -1,0 +1,89 @@
+#context {
+    padding:10px;
+    margin: 10px;
+    text-align: left;
+    background-color:#dcdcdc;
+    border-radius:5px
+} 
+.qa { 
+    margin: 10px;
+    width: 70%;
+    float: left;
+}
+.description {
+    float : right;
+}
+#id {  
+    font-family: Helvetica;
+    font-size: 28px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    text-align: left;
+    color: #202124;
+}
+#outLine{
+    font-family: Helvetica;
+    font-size: 40px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #202124;
+}
+.container {
+    padding:10px;
+    margin: 20px;
+}
+.input {
+    width: 47px;
+    height: 28px;
+    font-family: Helvetica;
+    font-size: 19px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.95;
+    letter-spacing: normal;
+    text-align: left;
+    color: #7e57c2;
+}
+.text{
+    border-radius: 3px;
+    border: solid 2px #ebeded;
+    background-color: #ffffff;
+}
+.description {
+    font-family: Helvetica;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.54;
+    letter-spacing: normal;
+    text-align: left;
+    color: #a6adb4;
+    margin: 10px;
+}
+#submit{
+    width: 100px;
+    height: 30px;
+    background-color: #7e57c2;
+    margin-top:10px;
+    border:none;
+    border-radius:4px;
+    float: right;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: center;
+    color: #f6f8f9;
+}
+#submit:hover{
+    background-color: #9575cd ;
+}
