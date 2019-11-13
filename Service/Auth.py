@@ -28,7 +28,21 @@ def register(name, account, password):
         dao.createUser(user)
     except pymysql.err.IntegrityError as e:
         if e.args[0] == 1062:
-            return "ERROR=1062"
-        print(e.args[0])
+            return 'Duplicate entry'
     return "SUCCESS"
+
+
+def is_exist(name=None, account=None):
+    dao = UserDAO()
+    if name is not None:
+        user = dao.readUserByName(name)
+        if user:
+            return True
+    elif account is not None:
+        user = dao.readUserByAccount(account)
+        if user:
+            return True
+    else:
+        raise Exception(9999, "NO KEY")
+    return False
 

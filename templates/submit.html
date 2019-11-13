@@ -3,38 +3,104 @@
     <head>
         <meta charset="UTF-8">
         <title>BQuAD Submit Page</title>
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="../static/style/submit.css"/>
-        <script src="../static/script/jquery-3.4.1.min.js"></script>
-        <script src="../static/script/submit/submit.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Hi+Melody&display=swap&subset=korean" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Hi+Melody|Jomolhari|Literata|Song+Myung&display=swap" rel="stylesheet">
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous">
+        </script>
+        <script>
+            var data_JSON = {{ data | tojson | safe }}
+        </script>
+        <script src="../static/script/submit.js"></script>
     </head>
-    <body> 
-        <div class="container">
-            <span id="id">{{id_}} : </span>
-            <span id="outLine">{{ outLine }}</span>
-            <br>
-            <div id="context">{{paragraph}}</div>
-            <div class="qa">
-                <form action="/send" method="post">
-                    <label class="input">
-                        질문 <br>
-                        <input class="text" id="question" type="text" name="question"
-                            size="50" value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요">
-                    </label>
-                    <br>
-                    <br>
-                    <label for="answer">
-                        정답 <br>
-                        </label><input class="text" id="answer" type="text" name="temp" size="50"
-                             readonly="false" placeholder="정답을 드래그하여 선택해주세요" >
-                        <button type="button" onclick="erase()"> 지우기 </button>
-                        <button type="button" onclick="recover()"> 되돌리기 </button>
-            <div class="description">
-                질문을 입력합니다. 정답을 입력할 떄는 문단에서 드래그하여 선택합니다. 제출은 Enter 입니다. 질문은 의문형이여야 합니다. 
-            <div>
-                <button id="submit">제출하기</button>
+    <body>
+        <div class="logo">
+            <a href = "/" ></a>
+            <img src="../static/image/icon.png" style="width: 10%"></a>
+        </div>
+        <div class="btn_play"></div>
+	    <div id="menu" class="font_apply">
+            <a class="menu_button" href = #>오류 보고</a>
+            <a class="menu_button" href = #>계정 관리</a>
+            <a class="menu_button" href = #>QA 작성</a>
+            <a class="menu_button" href = #>소개</a>
+        </div>
+        <div class="submit_box">
+            <div class="search_condition">
+                <select id="s1" style="width:5.5%" class="selector font">
+                    <option selected>구/신약</option>
+                </select>
+                <select id="s2" style="width:9%" class="selector font">
+                    <option selected>성경</option>
+                </select>
+                <select id="s3" style="width:3%" class="selector font">
+                    <option selected>-</option>
+                </select>
+                <label class="font" style="font-size: 1.6vw;">장</label>
+                <select id="s4" style="width:3%" class="selector font">
+                    <option selected>-</option>
+                </select>
+                <label class="font" style="font-size: 1.6vw;">절</label>
+                <img id='img_search' src="../static/image/search_img.png" style="margin-left: 0.6%"/>
             </div>
+            <div class="container">
+                <div id="title">
+                    <div id="outLine" class="font">단락 제목</div>
+                    <div id="bible_num" class="font">(- -:- ~ -:-)</div>
+                </div>
+                <div id="context" class="font"> * '장/절'을 선택해주세요. (창세기 1:1~2:3 / 창세기 2:4~2:25) </div>
+                <div class="qa">
+                    <form> <!-- action="/send" method="post" 잠시 지워놓음 -->
+                        <div style="margin-top: 2%;"> <!-- 질문 영역 -->
+                            <div>
+                                <label class="input_label font"> 질문
+                                <img width="1.5%" src="../static/image/help_outline_1x.png" class="btn" for="open-pop">
+                                <input class="modal-state" id="open-pop" type="checkbox" />
+                                <div class="modal">
+                                    <label class="modal_bg" for="open-pop"></label>
+                                    <div class="modal_inner">
+                                        <label class="modal_close" for="open-pop"></label>
+                                        <h2 id="popup_title"> 제출 시 유의사항 </h2>
+                                        <p id="popup_content">질문을 입력합니다. 정답을 입력할 때는 문단에서 드래그하여 선택합니다. 질문은 의문형이여야 합니다.</p>
+                                    </div>
+                                </div>
+                                </label>
+                            </div>
+                            <input class="input_text font" id="question" type="text" name="question"
+                                value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요"/>
+                        </div>
+                        <div style="margin-top: 2%;"> <!-- 답변 영역 -->
+                            <label class="input_label font"> 답변 </label>
+                            <div style="text-align: left;">
+                                <input style="display:inline-block;" class="input_text font" id="answer" type="text"
+                                    value="" readonly='true' placeholder="드래그해서 답변을 입력해주세요"/>
+                                <div style="display:inline-block;" id="btn_group">
+                                    <button id="btn_ans1" type="button" onclick="erase()"></button>
+                                    <button id="btn_ans2" type="button" onclick="recover()"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br>
+                <div>
+                    <button id="submit" class="font">제출하기</button>
+                </div>
             </div>
-                </form>
+            <div class=show_qa>
+                <div class="font" id="q_list" onclick=>이미 등록된 QA 보기/숨기기</div>
+                <div id="scrollbox">
+                    <p class="description font">&lt;기존의 QA 리스트&gt;</p>
+                    <p class="description font">1.</p>
+                    <p class="description font">2.</p>
+                    <p class="description font">3.</p>
+                    <p class="description font">4.</p>
+                    <p class="description font">5.</p>
+                </div>
             </div>
         </div>
     </body>
