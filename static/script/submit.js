@@ -62,38 +62,25 @@ function recover() {
 }
 
 function find_paragraph(search) {
-    // for (let i = 0; i < pg.length; i++) {
-    //     if (pg[i]["신/구약"] != search[0] || pg[i]["성경"] != search[1]) continue;
-    //     if (pg[i]["시작_장"] > search[2] || pg[i]["끝_장"] < search[2]) continue;
-    //     if (pg[i]["시작_장"] == search[2]) {
-    //         if (pg[i]["시작_절"] <= search[3] || pg[i]["끝_절"] >= search[3]) return pg[i];
-    //     }
-    //     else { // 시작_장보다 크지만 끝_장보다 작거나 같은 장인 경우
-    //         if (pg[i]["끝_장"] > search[2]) return pg[i];
-    //         else { // 끝_장과 같은 장인 경우
-    //             if (pg[i]["끝_절"] >= search[3]) return pg[i];
-    //         }
-    //     }
-    // }
 
-    var req = 'book=' + search[1] + '&' +
-                'chapter=' + search[2] + '&' +
-                'verse=' + search[3];
+    var result = null;
 
     $.ajax({
         type : "GET",
         dataType : "text",
+        async : false,
         data : {book : search[1], chapter : search[2], verse: search[3]},
         url : "/submit/paragraph",
         success: function (data) {
             console.log(data);
-            return data;
+            result = JSON.parse(data)
+            return result;
         },
         error : function (e) {
             alert('서버 연결 도중 에러발생' + e);
         }
     })
-    return null;
+    return result;
 }
 
 function getArray(obj) {
@@ -140,6 +127,7 @@ $(document).ready(function () {
             return;
         }
         var result = find_paragraph(search);
+        console.log(result)
 
         // 검색된 단락이 없을 때
         if (result == null) {
@@ -148,7 +136,7 @@ $(document).ready(function () {
             content.text("(없음)");
             return;
         }
-        console.log(result)
+
         //출력
         outline.text(result["단락_제목"]);
         bible_num.text("(" + result["성경"] + " " + result["시작_장"] + ":" + result["시작_절"] + " ~ " + result["끝_장"] + ":" + result["끝_절"] + ")");
