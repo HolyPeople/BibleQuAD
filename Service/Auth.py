@@ -4,10 +4,14 @@ import pymysql
 import bcrypt
 
 
-def login(account, password):
+def __login(account, password, is_name=True):
     try:
         dao = UserDAO()
-        user = dao.readUserByAccount(account)
+        user = None
+        if is_name:
+            user = dao.readUserByName(account)
+        else:
+            user = dao.readUserByAccount(account)
         if user is None:
             return None
         else:
@@ -16,8 +20,16 @@ def login(account, password):
             else:
                 return None
     except pymysql.Error as e:
-        print(e)
+        pass
     return None
+
+
+def loginByEmail(account, password):
+    return __login(account, password, False)
+
+
+def loginByUserName(account, password):
+    return __login(account, password)
 
 
 def register(name, account, password):

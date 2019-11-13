@@ -72,7 +72,6 @@ function find_paragraph(search) {
         data : {book : search[1], chapter : search[2], verse: search[3]},
         url : "/submit/paragraph",
         success: function (data) {
-            console.log(data);
             result = JSON.parse(data)
             return result;
         },

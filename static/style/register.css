@@ -1,0 +1,30 @@
+.register-container {
+     position: absolute;
+     width: 500px;
+     height: 500px;
+     left: 50%;
+     top: 50%;
+     margin-left: -250px;
+     margin-top: -250px;
+}
+
+.short{
+font-weight:bold;
+color:#FF0000;
+font-size:larger;
+}
+.weak{
+font-weight:bold;
+color:orange;
+font-size:larger;
+}
+.good{
+font-weight:bold;
+color:#2D98F3;
+font-size:larger;
+}
+.strong{
+font-weight:bold;
+color: limegreen;
+font-size:larger;
+}

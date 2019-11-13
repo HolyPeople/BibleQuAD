@@ -6,51 +6,36 @@
     <!--
     <link rel="stylesheet" href="../static/style/bootstrap.css">
     -->
-    <link rel="script" href="../static/script/materialize.js">
+    <script src="../static/script/materialize.js"></script>
     <link rel="stylesheet" href="../static/style/materialize.css">
-    <style>
-        .login-container {
-             position: absolute;
-             width: 500px;
-             height: 500px;
-             left: 50%;
-             top: 50%;
-             margin-left: -250px;
-             margin-top: -250px;
-        }
-        .login-header {
-            text-align: center;
-        }
-        .account-field {
-            padding-bottom: 20px;
-        }
-        .password-field {
-            padding-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/style/login.css">
 </head>
 <body>
 <!-- container -->
 <div class="login-container">
-    <form action="/login" accept-charset="UTF-8" method="post">
-        <input type="hidden" name="authenticity_token" value="{{ authenticity_token }}">
-        <input type="hidden" name="timestamp" value="{{ timestamp }}">
+    <form action="/session" accept-charset="UTF-8" method="post" class="col s12">
         <div class="login-header" style="margin: 40px">
-            <h1>BQuAD</h1>
+            <img src="../static/style/images/icon.png" width="50%" alt="logo">
         </div>
-        <dliv class="js-flash-container"></dliv>
+        <dliv class="js-flash-container">
+
+        </dliv>
         <div class="login-body">
-            <div class="account-field">
-                <input type="text" class="login-input form-control input-lg" id="focusedInput" name="account" placeholder="아이디" maxlength="41" autofocus="autofocus">
+            <div class="input-field col s12 account-field">
+                <input id="account" name="account" type="text" class="{{validate}}">
+                <label for="account">아이디</label>
+                <span class="helper-text" data-error="아이디 또는 비밀번호가 잘못되었습니다."></span>
             </div>
-            <div class="password-field">
-                <input type="password" class="login-input form-control input-lg" id="focusedInput" name="password" placeholder="비밀번호" maxlength="41">
+            <div class="input-field col s12 password-field">
+                <input id="password" name="password" type="password" class="{{validate}}">
+                <label for="password">비밀번호</label>
+                <span class="helper-text" data-error="아이디 또는 비밀번호가 잘못되었습니다."></span>
             </div>
-            <input type="submit" name="commit" value="로그인" class="btn btn-primary" style="float: right; height: 50px; width: 100%; margin-bottom: 40px">
+            <input type="submit" name="commit" value="로그인" class="btn-large" style="float: right; width: 100%; margin-bottom: 40px">
         </div>
     </form>
     <div class="find_info" style="text-align: center">
-        <a target="_blank" id="idinquiry" href="/help?todo=idinquiry">아이디 찾기</a> <span class="bar" aria-hidden="true">|</span> <a target="_blank" id="pwinquiry" href="/nidreminder.form">비밀번호 찾기</a> <span class="bar" aria-hidden="true">|</span> <a target="_blank" id="join" href="/join">회원가입</a>
+        </span> <a target="_blank" id="pwQuery" href="/help?key=password">비밀번호 찾기</a> <span class="bar" aria-hidden="true">|</span> <a target="_blank" id="join" href="/join">회원가입</a>
     </div>
 </div>
 </body>

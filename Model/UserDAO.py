@@ -47,13 +47,13 @@ class UserDAO:
 
     # Read User
     def readUserByAccount(self, account):
-        return self.readUser('account', account)
+        return self.__readUser('account', account)
 
     def readUserByName(self, name):
-        return self.readUser('name', name)
+        return self.__readUser('name', name)
 
     def readUserByUUID(self, _uuid):
-        return self.readUser('uuid', _uuid)
+        return self.__readUser('uuid', _uuid)
 
     def __readUser(self, key, value):
         sql = "SELECT * from users WHERE {0}=%s".format(key)
@@ -79,7 +79,7 @@ class UserDAO:
         self.conn.commit()
 
     def deleteUserByAccount(self, account):
-        self.deleteUser('account', account)
+        self.__deleteUser('account', account)
 
     def deleteUserByUUID(self, _uuid):
-        self.deleteUser('uuid', _uuid)
+        self.__deleteUser('uuid', _uuid)

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, redirect, url_for, request
-import datetime
+import datetime, re
 from Model.AESCipher import AESCipher
 from Service import Auth
 from Service import Bible
@@ -23,30 +23,31 @@ def description():
     return render_template('description.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login')
 def login():
+     return render_template('login-1.html')
+
+
+
+@app.route('/session', methods=['POST', 'GET'])
+def sessionControl():
     if request.method == 'GET':
-        return render_template('login-1.html',
-                               authenticity_token="",
-                               timestamp=int(datetime.datetime.now().timestamp()))
+        return redirect(url_for('login'))
     else:
         account = request.form['account']
         password = request.form['password']
-        timestamp = request.form['timestamp']
-        user = Auth.login(aes.encrypt(account), password)
+        user = None
+        if re.compile(r'^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$').match(
+                account):
+            user = Auth.loginByEmail(aes.encrypt(account), password)
+        else:
+            user = Auth.loginByUserName(aes.encrypt(account), password)
+
         if user is None:
-            return '가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.'
+            return render_template('login-1.html', validate='invalid')
         else:
             session['uuid'] = user.uuid
             return redirect(url_for('index'))
-
-
-@app.route('/session')
-def sessionControl():
-    account = request.form['account']
-    password = request.form['password']
-    timestamp = request.form['timestamp']
-
 
 @app.route('/logout')
 def logout():
@@ -59,12 +60,16 @@ def submit():
     return render_template('submit-10.html', data=Bible.getChapter())
 
 
-@app.route('/join', methods=['POST'])
+@app.route('/join', methods=['GET', 'POST'])
 def join():
-    name = request.form['name']
-    account = request.form['account']
-    password = request.form['password']
-    return Auth.register(aes.encrypt(name), aes.encrypt(account), password)
+    if request.method == 'GET':
+        return render_template('register.html')
+    else:
+        name = request.form['name']
+        account = request.form['account']
+        password = request.form['password']
+        if Auth.register(aes.encrypt(name), aes.encrypt(account), password) == 'SUCCESS':
+            return redirect(url_for("index"))
 
 
 @app.route('/auth-query', methods=['POST'])
