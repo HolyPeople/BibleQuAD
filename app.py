@@ -15,7 +15,12 @@ aes = AESCipher(key)
 def index():
     if 'uuid' in session:
         return session['uuid'] + " login <a href='/logout'> logout </a>"
-    return "Not login <a href='/login'>login </a>"
+    return render_template('main.html')
+
+
+@app.route('/description')
+def description():
+    return render_template('description.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -52,7 +57,7 @@ def logout():
 # TODO: link to submit page
 @app.route('/submit')
 def submit():
-    return render_template('submit.html', data=Bible.getChapter())
+    return render_template('submit-10.html', data=Bible.getChapter())
 
 
 # TODO: link to registration page
@@ -78,7 +83,11 @@ def query():
 
 @app.route('/submit/paragraph')
 def getParagraph():
-    return {}
+    print(request.args)
+    book = request.args['book']
+    chapter = request.args['chapter']
+    verse = request.args['verse']
+    return Bible.getParagraph(book, chapter, verse)
 
 
 if __name__ == '__main__':

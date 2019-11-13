@@ -46,7 +46,7 @@ function erase() {
     var input = document.getElementById('answer');
     var answer = input.value;
     var array = makeArray(answer);
-    if (array[array.length - 1] == 1) { // 한 글자 남았을 때
+    if (array[array.length - 1] === 1) { // 한 글자 남았을 때
         alert('더 이상 지울 수 없습니다.');
         return;
     }
@@ -75,6 +75,24 @@ function find_paragraph(search) {
     //         }
     //     }
     // }
+
+    var req = 'book=' + search[1] + '&' +
+                'chapter=' + search[2] + '&' +
+                'verse=' + search[3];
+
+    $.ajax({
+        type : "GET",
+        dataType : "text",
+        data : {book : search[1], chapter : search[2], verse: search[3]},
+        url : "/submit/paragraph",
+        success: function (data) {
+            console.log(data);
+            return data;
+        },
+        error : function (e) {
+            alert('서버 연결 도중 에러발생' + e);
+        }
+    })
     return null;
 }
 
@@ -118,6 +136,9 @@ $(document).ready(function () {
         $('.selector').each(function (index, item) {
             search.push($(item).val());
         });
+        if (search[3] === '-') {
+            return;
+        }
         var result = find_paragraph(search);
 
         // 검색된 단락이 없을 때
@@ -127,7 +148,7 @@ $(document).ready(function () {
             content.text("(없음)");
             return;
         }
-
+        console.log(result)
         //출력
         outline.text(result["단락_제목"]);
         bible_num.text("(" + result["성경"] + " " + result["시작_장"] + ":" + result["시작_절"] + " ~ " + result["끝_장"] + ":" + result["끝_절"] + ")");

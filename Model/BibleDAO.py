@@ -57,13 +57,13 @@ class BibleDAO:
         content = results[0][4]
         for result in results[1:]:
             content = content + ' ' + result[4]
-        paragraph = {'title': outline['title'],
-                     'content': content,
-                     'start_chapter': results[0][2],
-                     'book': results[0][1],
-                     'start_verse': results[0][3],
-                     'end_chapter': results[-1][2],
-                     'end_verse': results[-1][3]
+        paragraph = {'단락_제목': outline['title'],
+                     '단락_내용': content,
+                     '시작_장': results[0][2],
+                     '성경': results[0][1],
+                     '시작_절': results[0][3],
+                     '끝_장': results[-1][2],
+                     '끝_절': results[-1][3]
                      }
         return paragraph
 
