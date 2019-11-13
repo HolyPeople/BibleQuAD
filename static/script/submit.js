@@ -108,6 +108,9 @@ $(document).ready(function () {
         var offset_max = convertIndexRight(Math.max(selected.anchorOffset, selected.focusOffset) - 1, arr);
         if (!offset_max) offset_max = 0; // 예외 처리
         var sentence = this.innerHTML.substring(offset_min, offset_max);
+        var range  = selected.getRangeAt(0);
+        range.setStart(selected.anchorNode, offset_min);
+        range.setEnd(selected.focusNode, offset_max);
         sentence = delete_dot(sentence);
         var answer_input = document.getElementById('answer'); // 정답란
         answer_input.value = sentence;

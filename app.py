@@ -54,13 +54,11 @@ def logout():
     return redirect(url_for("index"))
 
 
-# TODO: link to submit page
 @app.route('/submit')
 def submit():
     return render_template('submit-10.html', data=Bible.getChapter())
 
 
-# TODO: link to registration page
 @app.route('/join', methods=['POST'])
 def join():
     name = request.form['name']
@@ -83,7 +81,6 @@ def query():
 
 @app.route('/submit/paragraph')
 def getParagraph():
-    print(request.args)
     book = request.args['book']
     chapter = request.args['chapter']
     verse = request.args['verse']
