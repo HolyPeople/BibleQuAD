@@ -9,3 +9,13 @@
 #logo{
     width:60%;
 }
+
+#logo_btn{
+    background: url("images/icon.png") no-repeat;
+    width:250px;
+    height:170px;
+	border: none;
+    background-size: 100%;
+	vertical-align: middle;
+
+}
