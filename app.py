@@ -25,8 +25,12 @@ def description():
 
 @app.route('/login')
 def login():
-     return render_template('login-1.html')
+    return render_template('login-1.html')
 
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
 
 
 @app.route('/session', methods=['POST', 'GET'])
@@ -48,6 +52,7 @@ def sessionControl():
         else:
             session['uuid'] = user.uuid
             return redirect(url_for('index'))
+
 
 @app.route('/logout')
 def logout():

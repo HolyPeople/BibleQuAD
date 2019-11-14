@@ -17,9 +17,6 @@
             <li><a href = /submit>QA 제출</a></li>
             <li><a href = /report>오류 보고</a></li>
         </ul>
-        <ul class="right hide-on-small-and-down hide-on-large-only">
-            <li><a href = /submit>QA 제출</a></li>
-        </ul>
         <ul id="nav-mobile" class="sidenav">
             <li><a href = /help?account>계정 관리</a></li>
             <li><a href = /submit>QA 제출</a></li>
@@ -29,42 +26,58 @@
     </div>
 </nav>
 <br><br>
-<div class="container row" >
-    <div class="input-field col s4">
-        <select id="s1">
-            <optgroup label="team 1">
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-            </optgroup>
-            <optgroup label="team 2">
-                <option value="3">Option 3</option>
-                <option value="4">Option 4</option>
-            </optgroup>
-        </select>
-        <label for="s1">성경</label>
+<div class="container" >
+    <div class="selector center row" >
+        <div class="input-field col s4">
+            <select id="s1">
+                <optgroup label="구약">
+                </optgroup>
+                <optgroup label="신약">
+                </optgroup>
+            </select>
+            <label for="s1">성경</label>
+        </div>
+        <div class="input-field col s3">
+            <select id="s2">
+            </select>
+            <label for="s2">장</label>
+        </div>
+        <div class="input-field col s3">
+            <select id="s3">
+            </select>
+            <label for="s3">절</label>
+        </div>
+        <div id="search_btn" class="col s1">
+            <a class="waves-effect waves-orange white btn-small"><i class="blue-text material-icons left">search</i></a>
+        </div>
     </div>
-    <div class="input-field col s3">
-        <select id="s2">
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 4</option>
-        </select>
-        <label for="s2">장</label>
+    <div>
+        <div class="card-panel row">
+            <div id="title" class="col s6 offset-m4">
+                <span id="outLine" class="flow-text">단락 제목</span>
+                <span id="bible_num" class="">(- -:- ~ -:-)</span>
+            </div>
+            <div class="divider col s12"></div>
+            <div class="font col s12"> <p id="context">* '장/절'을 선택해주세요. (창세기 1:1~2:3 / 창세기 2:4~2:25)</p> </div>
+        </div>
     </div>
-    <div class="input-field col s3">
-        <select id="s3">
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 4</option>
-        </select>
-        <label for="s3">절</label>
+
+    <div class="qa row">
+        <div class="input-field col s12">
+            <label for="question">질문 입력</label><input type="text" name="" id="question">
+        </div>
+        <div class="col s6 offset-m5">
+            <a id="submit" class="blue darken-2 waves-effect waves-light btn">질문 하기<i class="material-icons right">send</i></a>
+        </div>
     </div>
-    <div class="col s1">
-        <br>
-        <a class="waves-effect waves-orange white btn-small"><i class="blue-text material-icons center">search</i></a>
+
+    <div class="row card-panel">
+        <div class="grey-text">정답을 추론합니다.</div>
+        <div id="submit_result" class=""></div>
+
     </div>
+
+
     <!--
     <div>
         <div class="search_condition">

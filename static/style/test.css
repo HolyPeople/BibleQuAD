@@ -117,3 +117,12 @@ p {
 footer.page-footer {
   margin: 0;
 }
+
+.selector {
+	width: 70%;
+}
+
+#search_btn i {
+	width: 5px;
+	height: 5px;
+}
