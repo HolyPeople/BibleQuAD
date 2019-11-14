@@ -236,3 +236,5 @@ database.conf
 Test/
 
 .hashsalt
+
+.apiKey

@@ -28,37 +28,42 @@
 <br><br>
 <div class="container" >
     <div class="selector center row" >
+        <div class="input-field col s3">
+            <select id="s1" class="selection">
+                <option selected>구/신약</option>
+            </select>
+            <label for="s1">구/신약</label>
+        </div>
         <div class="input-field col s4">
-            <select id="s1">
-                <optgroup label="구약">
-                </optgroup>
-                <optgroup label="신약">
-                </optgroup>
+            <select id="s2" class="selection">
+                <option selected>-</option>
             </select>
-            <label for="s1">성경</label>
+            <label for="s2">성경</label>
         </div>
-        <div class="input-field col s3">
-            <select id="s2">
+        <div class="input-field col s2">
+            <select id="s3" class="selection">
+                <option selected>-</option>
             </select>
-            <label for="s2">장</label>
+            <label for="s3">장</label>
         </div>
-        <div class="input-field col s3">
-            <select id="s3">
+        <div class="input-field col s2">
+            <select id="s4" class="selection">
+                <option selected>-</option>
             </select>
-            <label for="s3">절</label>
+            <label for="s4">절</label>
         </div>
-        <div id="search_btn" class="col s1">
+        <div id="search_btn" class="col s1 ">
             <a class="waves-effect waves-orange white btn-small"><i class="blue-text material-icons left">search</i></a>
         </div>
     </div>
     <div>
         <div class="card-panel row">
-            <div id="title" class="col s6 offset-m4">
+            <div id="title" class="col s12">
                 <span id="outLine" class="flow-text">단락 제목</span>
                 <span id="bible_num" class="">(- -:- ~ -:-)</span>
             </div>
             <div class="divider col s12"></div>
-            <div class="font col s12"> <p id="context">* '장/절'을 선택해주세요. (창세기 1:1~2:3 / 창세기 2:4~2:25)</p> </div>
+            <div class="font col s12"> <p id="context">* '성경/장/절'을 선택해주세요.</p> </div>
         </div>
     </div>
 
@@ -67,61 +72,15 @@
             <label for="question">질문 입력</label><input type="text" name="" id="question">
         </div>
         <div class="col s6 offset-m5">
-            <a id="submit" class="blue darken-2 waves-effect waves-light btn">질문 하기<i class="material-icons right">send</i></a>
+            <a id="submit" class="blue darken-2 waves-effect waves-light btn" disabled="disabled">질문 하기<i class="material-icons right">send</i></a>
         </div>
     </div>
 
-    <div class="row card-panel">
-        <div class="grey-text">정답을 추론합니다.</div>
-        <div id="submit_result" class=""></div>
+    <div id="result_container">
 
     </div>
-
-
-    <!--
-    <div>
-        <div class="search_condition">
-            <select id="s1" style="width:5.5%" class="selector font">
-                <option selected>구/신약</option>
-            </select>
-            <select id="s2" style="width:9%" class="selector font">
-                <option selected>성경</option>
-            </select>
-            <select id="s3" style="width:3%" class="selector font">
-                <option selected>-</option>
-            </select>
-            <label class="font" style="font-size: 1.6vw;">장</label>
-            <select id="s4" style="width:3%" class="selector font">
-                <option selected>-</option>
-            </select>
-            <label class="font" style="font-size: 1.6vw;">절</label>
-            <img id='img_search' src="images/search_img.png" style="margin-left: 0.6%"/>
-        </div>
-        <div class="container" style="margin:1%">
-            <div id="title">
-                <div id="outLine" class="font">단락 제목</div>
-                <div id="bible_num" class="font">(- -:- ~ -:-)</div>
-            </div>
-            <div id="context" class="font"> * '장/절'을 선택해주세요. (창세기 1:1~2:3 / 창세기 2:4~2:25) </div>
-            <div class="qa">
-                <form action="/send" method="post">
-                    <div>
-                        <label class="input_label font"> 질문 </label>
-                        <input class="input_text font" id="question" type="text" name="question"
-                               value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요"/>
-                        <label id="ok" onclick="submit()" class="font" style="margin-left: 0.4%;">확인</label>
-                    </div>
-                    <div style="margin-top: 0.8%;">
-                        <label class="input_label font"> 답변 </label>
-                        <input class="input_text font" id="answer" type="text"
-                               value="" readonly='true' placeholder="답변을 예측합니다"/>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    -->
 </div>
+<script> var data_JSON = {{ data | tojson | safe }}</script>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="../static/script/materialize.min.js"></script>
 <script src="../static/script/test.js"></script>

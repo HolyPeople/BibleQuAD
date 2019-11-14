@@ -1,13 +1,13 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 import datetime, re
 from Model.AESCipher import AESCipher
-from Service import Auth
-from Service import Bible
+from Service import Auth, Bible, QATest
 
 app = Flask(__name__)
 app.templates_auto_reload = True
 app.secret_key = b'$2b$12$s62qTZXKnIAJxiTjw9QUcu'
 key = open('.secret').readline()
+api_key = open('.apiKey').readline()
 aes = AESCipher(key)
 
 
@@ -30,7 +30,14 @@ def login():
 
 @app.route('/test')
 def test():
-    return render_template('test.html')
+    return render_template('test.html', data=Bible.getChapter())
+
+
+@app.route('/test/answer')
+def answer():
+    paragraph = request.args['paragraph']
+    question = request.args['question']
+    return QATest.getQuery(accessKey=api_key, passage=paragraph, question=question)
 
 
 @app.route('/session', methods=['POST', 'GET'])
