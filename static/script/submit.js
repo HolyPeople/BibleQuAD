@@ -1,6 +1,9 @@
-var answer_back_up; // 정답 내용 백업
-var count = 0; // 지우고 되돌리기 index
+var answer_back_up = []; // 정답 내용 백업
+var count = []; // 지우고 되돌리기 index
 var s1, s2, s3, s4; // 셀렉터 값
+var multiple_answer_box = []; // 중복 답변란
+var mab_num = 0; // 중복 답변란 개수
+var focused_box = 0; // 포커스된 답변란의 index
 
 function convertIndexLeft(index, array) { // index번째 문자가 포함된 단어의 왼쪽 index 추출
     var sum = 0;
@@ -42,23 +45,71 @@ function delete_dot(str) { // '.' 제거
     return output;
 }
 
-function erase() {
-    var input = document.getElementById('answer');
-    var answer = input.value;
+function erase(event) {
+    var tar = event.target;
+    var parent = $('#QA_container');
+    var child_index = Array.prototype.indexOf.call(parent.children(), tar) - 1; // 답변란 index
+    var input_to_erase = parent.children().eq(child_index);
+    var answer = input_to_erase.val();
     var array = makeArray(answer);
-    if (array[array.length - 1] === 1) { // 한 글자 남았을 때
+    if (array[array.length - 1] == 1) { // 한 글자 남았을 때
         alert('더 이상 지울 수 없습니다.');
         return;
     }
-    count--;
-    input.value = answer_back_up.substring(0, answer_back_up.length + count);
+    var i = Math.floor(child_index / 4);
+    count[i]--;
+    input_to_erase.get(0).value = answer_back_up[i].substring(0, answer_back_up[i].length + count[i]);
 }
 
-function recover() {
-    var input = document.getElementById('answer');
-    input.value = answer_back_up.substring(0, answer_back_up.length + count);
-    if (count === 0) return;
-    count++;
+function recover(event) {
+    var tar = event.target;
+    var parent = $('#QA_container');
+    var child_index = Array.prototype.indexOf.call(parent.children(), tar) - 2; // 답변란 index
+    var input_to_recover = parent.children().eq(child_index);
+    var i = Math.floor(child_index / 4);
+    input_to_recover.get(0).value = answer_back_up[i].substring(0, answer_back_up[i].length + count[i]);
+    if (count[i] == 0) return;
+    count[i]++;
+}
+
+function ans_box_listener(event) {
+    var parent = $('#QA_container'); // 삭제 버튼의 parent
+    var box_index = Array.prototype.indexOf.call(parent.children(), event.target);
+    focused_box = box_index;
+}
+
+function del_btn_listener(event) {
+    var tar_btn = event.target; // 중복 답변란 + 삭제 버튼
+    var parent = $('#QA_container'); // 삭제 버튼의 parent
+    var btn_index = Array.prototype.indexOf.call(parent.children(), tar_btn); // 누른 버튼의 index
+    parent.children().eq(btn_index - 3).remove();
+    parent.children().eq(btn_index - 3).remove();
+    parent.children().eq(btn_index - 3).remove();
+    parent.children().eq(btn_index - 3).remove();
+    var index = (btn_index - 3) / 4;
+    answer_back_up
+    remove_shift(multiple_answer_box, index, mab_num);
+    remove_shift(answer_back_up, index, mab_num);
+    remove_shift(count, index, mab_num);
+    mab_num--; // 중복 답변란 개수 --
+}
+
+function add() {
+    if (mab_num == 10) return; // 중복 답변은 10개로 제한
+    // 중복 답변란 추가
+    multiple_answer_box[mab_num] = $('<input onclick="check_focused()" style="display:inline-block;" class="input_text font" id="answer" type="text" value="" readonly="true" placeholder="드래그해서 답변을 입력해주세요"/>').appendTo('#QA_container');
+    multiple_answer_box[mab_num].click(ans_box_listener);
+    // 지우기 버튼 추가
+    var back_btn = $('<button class="btn_ans1" type="button"/>').appendTo('#QA_container');
+    back_btn.click(erase);
+    // 복원 버튼 추가
+    var rec_btn = $('<button class="btn_ans2" type="button"/>').appendTo('#QA_container');
+    rec_btn.click(recover);
+    // 삭제 버튼 추가
+    var del_btn = $('<button class="btn_ans4" type="button"/>').appendTo('#QA_container');
+    del_btn.click(del_btn_listener);
+
+    mab_num++; // 중복 답변란 개수 ++
 }
 
 function find_paragraph(search) {
@@ -66,16 +117,16 @@ function find_paragraph(search) {
     var result = null;
 
     $.ajax({
-        type : "GET",
-        dataType : "text",
-        async : false,
-        data : {book : search[1], chapter : search[2], verse: search[3]},
-        url : "/submit/paragraph",
+        type: "GET",
+        dataType: "text",
+        async: false,
+        data: { book: search[1], chapter: search[2], verse: search[3] },
+        url: "/submit/paragraph",
         success: function (data) {
             result = JSON.parse(data)
             return result;
         },
-        error : function (e) {
+        error: function (e) {
             alert('서버 연결 도중 에러발생' + e);
         }
     })
@@ -97,23 +148,35 @@ function append_options_by_array(selector_num, arr) {
     }
 }
 
+function remove_shift(array, index, size) { // 배열에서 remove and shift
+    let i;
+    for (i = index; i < size; i++) {
+        array[i] = array[i + 1];
+    }
+    array[i] = null;
+}
+
 $(document).ready(function () {
+    $('.btn_ans1').click(erase);
+    $('.btn_ans2').click(recover);
+    $('.btn_ans3').click(add);
+
     // 드래그 시 자동으로 답변란 채워짐
     $('#context').click(function () {
-        count = 0;
+        var i = Math.floor(focused_box / 4);
+        count[i] = 0;
         var selected = getSelection();
         var arr = makeArray(this.innerHTML);
         var offset_min = convertIndexLeft(Math.min(selected.anchorOffset, selected.focusOffset) + 1, arr);
         var offset_max = convertIndexRight(Math.max(selected.anchorOffset, selected.focusOffset) - 1, arr);
         if (!offset_max) offset_max = 0; // 예외 처리
         var sentence = this.innerHTML.substring(offset_min, offset_max);
-        var range  = selected.getRangeAt(0);
+        var range = selected.getRangeAt(0);
         range.setStart(selected.anchorNode, offset_min);
         range.setEnd(selected.focusNode, offset_max);
         sentence = delete_dot(sentence);
-        var answer_input = document.getElementById('answer'); // 정답란
-        answer_input.value = sentence;
-        answer_back_up = sentence;
+        $('#QA_container').children().eq(focused_box).val(sentence); // 답변 채우기
+        answer_back_up[i] = sentence;
     });
 
     // 단락 검색
