@@ -52,9 +52,9 @@
                     <div id="outLine" class="font">단락 제목</div>
                     <div id="bible_num" class="font">(- -:- ~ -:-)</div>
                 </div>
-                <div id="context" class="font"> * '장/절'을 선택해주세요. (창세기 1:1~2:3 / 창세기 2:4~2:25) </div>
+                <div id="context" class="font"> * '성경/장/절'을 선택해주세요.</div>
                 <div class="qa">
-                    <form> <!-- action="/send" method="post" 잠시 지워놓음 -->
+                    <form action="/send" method="post">
                         <div style="margin-top: 2%;"> <!-- 질문 영역 -->
                             <div>
                                 <label class="input_label font"> 질문
@@ -65,13 +65,21 @@
                                     <div class="modal_inner">
                                         <label class="modal_close" for="open-pop"></label>
                                         <h2 id="popup_title"> 제출 시 유의사항 </h2>
-                                        <p id="popup_content">질문을 입력합니다. 정답을 입력할 때는 문단에서 드래그하여 선택합니다. 질문은 의문형이여야 합니다.</p>
+                                        <p id="popup_content">
+                                            1. 질문<br>
+                                            - 물음표가 포함된 질문 형식(의문문)이어야 합니다.<br>
+                                            - 다른 제약 사항은 없습니다.<br>
+                                            2. 정답<br>
+                                            - 키보드로 직접 입력할 수 없고, 본문을 드래그해서 입력해야 합니다.<br>
+                                            - 정답의 내용을 드러내는 필수적인 단어들 외에 부가적인 표현들은 제외해야 합니다.<br>
+                                            - 정답으로 입력한 문장의 마지막 단어에서 첫 글자를 제외한 나머지 글자들만 지우거나 되돌릴 수 있습니다. (불필요한 조사 등을 지우지 위한 목적)<br>
+                                            - 하나의 질문에 대해 답변이 여러 가지가 나오는 경우, '+' 버튼을 통해 중복 답변을 제출할 수 있습니다.<br>
+                                            - 질문에 대해 정답을 찾을 수 없다면, NO_ANSWER를 체크하여 제출합니다. </p>
                                     </div>
                                 </div>
                                 </label>
                             </div>
-                            <input class="input_text font" id="question" type="text" name="question"
-                                value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요"/>
+                            <input class="input_text font" id="question" type="text" name="question" value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요" />
                         </div>
                         <div style="margin-top: 2%;"> <!-- 답변 영역 -->
                             <label class="input_label font"> 답변 </label>
