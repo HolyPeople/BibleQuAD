@@ -4,6 +4,8 @@ var s1, s2, s3, s4; // 셀렉터 값
 var multiple_answer_box = []; // 중복 답변란
 var mab_num = 0; // 중복 답변란 개수
 var focused_box = 0; // 포커스된 답변란의 index
+var answer_starts = [];
+var result;
 
 function convertIndexLeft(index, array) { // index번째 문자가 포함된 단어의 왼쪽 index 추출
     var sum = 0;
@@ -104,6 +106,7 @@ function del_btn_listener(event) {
     remove_shift(multiple_answer_box, index, mab_num);
     remove_shift(answer_back_up, index, mab_num);
     remove_shift(count, index, mab_num);
+    remove_shift(answer_starts, index, mab_num);
     mab_num--; // 중복 답변란 개수 --
 }
 
@@ -172,7 +175,7 @@ $(document).ready(function () {
     $('.btn_ans3').click(add);
 
     $('select').formSelect();
-      $('.sidenav').sidenav();
+    $('.sidenav').sidenav();
     $('.modal').modal();
 
     // 드래그 시 자동으로 답변란 채워짐
@@ -191,6 +194,7 @@ $(document).ready(function () {
         sentence = delete_dot(sentence);
         $('#QA_container').children().eq(focused_box).val(sentence); // 답변 채우기
         answer_back_up[i] = sentence;
+        answer_starts[i] = offset_min;
     });
 
     // 단락 검색
@@ -205,7 +209,7 @@ $(document).ready(function () {
         if (search[3] === '-') {
             return;
         }
-        var result = find_paragraph(search);
+        result = find_paragraph(search);
 
         // 검색된 단락이 없을 때
         if (result == null) {
@@ -257,10 +261,12 @@ $(document).ready(function () {
     });
 
     $('#submit').click(function () {
-        var answers = [$('#answer').val()]
+        var answers = [{text: $('#answer').val(), answer_start: answer_starts[0]}];
+        var question = $('#question').val();
         for (var i = 0; i < mab_num; i++) {
-            answers.push(multiple_answer_box[i].value)
+            answers.push({text: multiple_answer_box[i].val(), answer_start: answer_starts[i + 1]});
         }
-        alert(answers);
+        console.log(JSON.stringify(result));
+        console.log(JSON.stringify(answers));
     });
 });

@@ -37,13 +37,14 @@ class BibleDAO:
         return self.cursor.fetchone()[0]
 
     def __getOutline(self, _id):
-        get_outline_sql = 'SELECT title, start_id, end_id FROM woori_outlines ' \
+        get_outline_sql = 'SELECT id, title, start_id, end_id FROM woori_outlines ' \
                           'WHERE start_id <= {_id} AND end_id >= {_id}'.format(_id=_id)
         self.cursor.execute(get_outline_sql)
         res = self.cursor.fetchone()
-        return {'title': res[0],
-                'start_id': res[1],
-                'end_id': res[2]}
+        return {'id': res[0],
+                'title': res[1],
+                'start_id': res[2],
+                'end_id': res[3]}
 
     def getParagraph(self, book, chapter, verse):
         _id = self.__getVerseID(book, chapter, verse)
@@ -63,7 +64,8 @@ class BibleDAO:
                      '성경': results[0][1],
                      '시작_절': results[0][3],
                      '끝_장': results[-1][2],
-                     '끝_절': results[-1][3]
+                     '끝_절': results[-1][3],
+                     'id': outline['id']
                      }
         return paragraph
 
@@ -94,7 +96,3 @@ class BibleDAO:
                 else:
                     data['신약'][n_nt - 1]['verse_counts'].append(result[2])
         return data
-
-'''
-"verse_counts
-'''
