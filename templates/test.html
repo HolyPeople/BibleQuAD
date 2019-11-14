@@ -13,14 +13,16 @@
     <div class="nav-wrapper container">
         <a id="logo-container" href="/" class="brand-logo">BQuAD</a>
         <ul class="right hide-on-med-and-down">
-            <li><a href = /help?account>계정 관리</a></li>
+            <li><a href="/test">QA 시험</a></li>
             <li><a href = /submit>QA 제출</a></li>
             <li><a href = /report>오류 보고</a></li>
+            <li><a href="/test">로그아웃</a></li>
         </ul>
         <ul id="nav-mobile" class="sidenav">
-            <li><a href = /help?account>계정 관리</a></li>
+            <li><a href="/test">QA 시험</a></li>
             <li><a href = /submit>QA 제출</a></li>
             <li><a href = /report>오류 보고</a></li>
+            <li><a href="/logout">로그아웃</a></li>
         </ul>
         <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
@@ -80,7 +82,8 @@
 
     </div>
 </div>
-<script> var data_JSON = {{ data | tojson | safe }}</script>
+<script> var data_JSON = {{ bible | tojson | safe }}</script>
+<script> var data = {{ data | tojson |safe }};</script>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="../static/script/materialize.min.js"></script>
 <script src="../static/script/test.js"></script>

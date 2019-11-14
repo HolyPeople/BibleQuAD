@@ -14,8 +14,8 @@ aes = AESCipher(key)
 @app.route('/')
 def index():
     if 'uuid' in session:
-        return session['uuid'] + " login <a href='/logout'> logout </a>"
-    return render_template('main.html')
+        return render_template('main.html', data={'uuid': session['uuid']}, btn='submit', n_qa=0)
+    return render_template('main.html', data={'uuid': None}, btn='login', n_qa=0)
 
 
 @app.route('/description')
@@ -25,12 +25,17 @@ def description():
 
 @app.route('/login')
 def login():
+    if 'uuid' in session:
+        return redirect(url_for('index'))
     return render_template('login-1.html')
 
 
 @app.route('/test')
 def test():
-    return render_template('test.html', data=Bible.getChapter())
+    if 'uuid' in session:
+        return render_template('test.html', bible=Bible.getChapter(), data={'uuid': session['uuid']})
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/test/answer')
@@ -42,6 +47,8 @@ def answer():
 
 @app.route('/session', methods=['POST', 'GET'])
 def sessionControl():
+    if 'uuid' in session:
+        return redirect(url_for('index'))
     if request.method == 'GET':
         return redirect(url_for('login'))
     else:
@@ -69,7 +76,9 @@ def logout():
 
 @app.route('/submit')
 def submit():
-    return render_template('submit-10.html', data=Bible.getChapter())
+    if 'uuid' not in session:
+        return redirect(url_for('login'))
+    return render_template('submit-10.html', bible=Bible.getChapter(), data={'uuid': session['uuid']})
 
 
 @app.route('/join', methods=['GET', 'POST'])

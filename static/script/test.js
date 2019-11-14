@@ -100,7 +100,7 @@ $(document).ready(function(){
     $('#question').keyup(function () {
         var question = $('#question');
         var str = question.val().trim();
-        if (str.length === 0) {
+        if (str.length === 0 || $('#s4 option:selected').val() === '-') {
             $('#submit').attr('disabled', 'disabled');
         } else {
             $('#submit').removeAttr('disabled');

@@ -12,9 +12,6 @@
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
             crossorigin="anonymous">
         </script>
-        <script>
-            var data_JSON = {{ data | tojson | safe }}
-        </script>
         <script src="../static/script/submit.js"></script>
     </head>
     <body>
@@ -121,4 +118,6 @@
             </div>
         </div>
     </body>
+<script> var data = {{ data | tojson |safe }};</script>
+<script> var data_JSON = {{ bible | tojson | safe }}</script>
 </html>
