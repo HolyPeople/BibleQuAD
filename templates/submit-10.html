@@ -81,15 +81,13 @@
                             </div>
                             <input class="input_text font" id="question" type="text" name="question" value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요" />
                         </div>
-                        <div style="margin-top: 2%;"> <!-- 답변 영역 -->
+                        <div style="margin-top: 2%;">
                             <label class="input_label font"> 답변 </label>
-                            <div style="text-align: left;">
-                                <input style="display:inline-block;" class="input_text font" id="answer" type="text"
-                                    value="" readonly='true' placeholder="드래그해서 답변을 입력해주세요"/>
-                                <div style="display:inline-block;" id="btn_group">
-                                    <button id="btn_ans1" type="button" onclick="erase()"></button>
-                                    <button id="btn_ans2" type="button" onclick="recover()"></button>
-                                </div>
+                            <div id="QA_container" style="text-align: left;">
+                                <input id="answer" onclick="ans_box_listener(event)" style="display:inline-block;" class="input_text font" type="text" value="" readonly='true' placeholder="드래그해서 답변을 입력해주세요" />
+                                <button class="btn_ans1" type="button"></button>
+                                <button class="btn_ans2" type="button"></button>
+                                <button class="btn_ans3" type="button"></button>
                             </div>
                         </div>
                     </form>
