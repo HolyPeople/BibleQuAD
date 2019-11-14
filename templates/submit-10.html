@@ -1,123 +1,123 @@
 <!DOCTYPE html>
 <html lang="kr">
-    <head>
-        <meta charset="UTF-8">
-        <title>BQuAD Submit Page</title>
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="../static/style/submit.css"/>
-        <link href="https://fonts.googleapis.com/css?family=Hi+Melody&display=swap&subset=korean" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Hi+Melody|Jomolhari|Literata|Song+Myung&display=swap" rel="stylesheet">
-        <script
-            src="https://code.jquery.com/jquery-3.4.1.js"
-            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-            crossorigin="anonymous">
-        </script>
-        <script src="../static/script/submit.js"></script>
-    </head>
-    <body>
-        <div class="logo">
-            <a href = "/" >
-            <img src="../static/style/images/icon.png" style="width: 10%"></a>
-        </div>
-        <div class="btn_play"></div>
-	    <div id="menu" class="font_apply">
-            <a class="menu_button" href = #>오류 보고</a>
-            <a class="menu_button" href = #>계정 관리</a>
-            <a class="menu_button" href = #>QA 작성</a>
-            <a class="menu_button" href = #>소개</a>
-        </div>
-        <div class="submit_box">
-            <div class="search_condition">
-                <select id="s1" style="width:5.5%" class="selector font">
-                    <option selected>구/신약</option>
-                </select>
-                <select id="s2" style="width:9%" class="selector font">
-                    <option selected>성경</option>
-                </select>
-                <select id="s3" style="width:3%" class="selector font">
-                    <option selected>-</option>
-                </select>
-                <label class="font" style="font-size: 1.6vw;">장</label>
-                <select id="s4" style="width:3%" class="selector font">
-                    <option selected>-</option>
-                </select>
-                <label class="font" style="font-size: 1.6vw;">절</label>
-                <img id='img_search' src="../static/style/images/search_img.png" style="margin-left: 0.6%"/>
-            </div>
-            <div class="container">
-                <div id="title">
-                    <div id="outLine" class="font">단락 제목</div>
-                    <div id="bible_num" class="font">(- -:- ~ -:-)</div>
-                </div>
-                <div id="context" class="font"> * '성경/장/절'을 선택해주세요.</div>
-                <div class="qa">
-                    <form action="/send" method="post">
-                        <div style="margin-top: 2%;"> <!-- 질문 영역 -->
-                            <div>
-                                <label class="input_label font"> 질문
-                                <img width="1.5%" src="../static/style/images/help_outline_1x.png" class="btn" for="open-pop">
-                                <input class="modal-state" id="open-pop" type="checkbox" />
-                                <div class="modal">
-                                    <label class="modal_bg" for="open-pop"></label>
-                                    <div class="modal_inner">
-                                        <label class="modal_close" for="open-pop"></label>
-                                        <h2 id="popup_title"> 제출 시 유의사항 </h2>
-                                        <p id="popup_content">
-                                            1. 질문<br>
-                                            - 물음표가 포함된 질문 형식(의문문)이어야 합니다.<br>
-                                            - 다른 제약 사항은 없습니다.<br>
-                                            2. 정답<br>
-                                            - 키보드로 직접 입력할 수 없고, 본문을 드래그해서 입력해야 합니다.<br>
-                                            - 정답의 내용을 드러내는 필수적인 단어들 외에 부가적인 표현들은 제외해야 합니다.<br>
-                                            - 정답으로 입력한 문장의 마지막 단어에서 첫 글자를 제외한 나머지 글자들만 지우거나 되돌릴 수 있습니다. (불필요한 조사 등을 지우지 위한 목적)<br>
-                                            - 하나의 질문에 대해 답변이 여러 가지가 나오는 경우, '+' 버튼을 통해 중복 답변을 제출할 수 있습니다.<br>
-                                            - 질문에 대해 정답을 찾을 수 없다면, NO_ANSWER를 체크하여 제출합니다. </p>
-                                    </div>
-                                </div>
-                                </label>
-                            </div>
-                            <input class="input_text font" id="question" type="text" name="question" value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요" />
-                        </div>
-                        <div style="margin-top: 2%;">
-                                
-                            <label class="input_label font"> 답변  </label>
+<head>
+    <meta charset="UTF-8">
+    <title>BQuAD Submit Page</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Hi+Melody|Jomolhari|Literata|Nanum+Myeongjo|Song+Myung&display=swap" rel="stylesheet">
+    <link href="../static/style/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="../static/style/submit.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
-                           
-                            <div id="QA_container" style="text-align: left;">
-                                <input id="answer" onclick="ans_box_listener(event)" style="display:inline-block;" class="input_text font" type="text" value="" readonly='true' placeholder="드래그해서 답변을 입력해주세요" />
-                                <button class="btn_ans1" type="button"></button>
-                                <button class="btn_ans2" type="button"></button>
-                                <button class="btn_ans3" type="button"></button>
-                            </div>
-
-                            <!-- <form name="checkboxArea" id="checkboxArea" method="post" action="#">
-                                    <p id="check">
-                                      <input type="checkbox" id="checkbox1" checked="checked" />
-                                      <label for="checkbox1" id="checkbox_lb" style="white-space: nowrap;">NO ANSWER</label>
-                                    </p>
-                            </form> -->
-
-                        </div>
-                    </form>
-                </div>
-                <br>
-                <div>
-                    <button id="submit" class="font">제출하기</button>
-                </div>
-            </div>
-            <div class=show_qa>
-                <div class="font" id="q_list" onclick=>이미 등록된 QA 보기/숨기기</div>
-                <div id="scrollbox">
-                    <p class="description font">&lt;기존의 QA 리스트&gt;</p>
-                    <p class="description font">1.</p>
-                    <p class="description font">2.</p>
-                    <p class="description font">3.</p>
-                    <p class="description font">4.</p>
-                    <p class="description font">5.</p>
-                </div>
-            </div>
+</head>
+<body>
+<nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+        <a id="logo-container" href="/" class="brand-logo">BQuAD</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="/test">QA 시험</a></li>
+            <li><a href = /submit>QA 제출</a></li>
+            <li><a href = /report>오류 보고</a></li>
+            <li><a href="/test">로그아웃</a></li>
+        </ul>
+        <ul id="nav-mobile" class="sidenav">
+            <li><a href="/test">QA 시험</a></li>
+            <li><a href = /submit>QA 제출</a></li>
+            <li><a href = /report>오류 보고</a></li>
+            <li><a href="/logout">로그아웃</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+<br><br>
+<div class="container" >
+    <div class="selector center row" >
+        <div class="input-field col s3">
+            <select id="s1" class="selection">
+                <option selected>구/신약</option>
+            </select>
+            <label for="s1">구/신약</label>
         </div>
-    </body>
+        <div class="input-field col s4">
+            <select id="s2" class="selection">
+                <option selected>-</option>
+            </select>
+            <label for="s2">성경</label>
+        </div>
+        <div class="input-field col s2">
+            <select id="s3" class="selection">
+                <option selected>-</option>
+            </select>
+            <label for="s3">장</label>
+        </div>
+        <div class="input-field col s2">
+            <select id="s4" class="selection">
+                <option selected>-</option>
+            </select>
+            <label for="s4">절</label>
+        </div>
+        <div id="search_btn" class="col s1 ">
+            <a id="img_search" class="white z-depth-0 btn-floating"><i class="blue-text material-icons">search</i></a>
+        </div>
+    </div>
+    <div>
+        <div class="card-panel row">
+            <div id="title" class="col s12">
+                <span id="outLine" class="flow-text">단락 제목</span>
+                <span id="bible_num" class="">(- -:- ~ -:-)</span>
+            </div>
+            <div class="divider col s12"></div>
+            <div class="font col s12"> <p id="context">* '성경/장/절'을 선택해주세요.</p> </div>
+        </div>
+        <div class="qa row">
+            <div class="col s9">
+                <label for="question" class="blue-text lighten-2 flow-text">질문 <a href="#modal1" class="btn-floating white waves-effect waves-orange z-depth-0 modal-trigger"><i class="black-text material-icons">help_outline</i></a> </label><input type="text" name="" id="question" placeholder="질문을 입력해 주세요">
+            </div>
+            <div class="col s9">
+                <label for="answer" class="blue-text lighten- flow-text">정답</label>
+             </div>
+            <div id="QA_container" class="row">
+                <input class="col s9 " onclick="ans_box_listener(event)" type="text" name="answer" readonly="true" id="answer" placeholder="정답을 드래그 하여 선택해 주세요">
+                <button class="col s1 btn_ans1 waves-effect waves-red btn-small white"><i class="black-text material-icons">keyboard_backspace</i></button>
+                <button class="col s1 btn_ans2 waves-effect waves-yellow btn-small white"><i class="black-text material-icons">restore</i></button>
+                <button class="col s1 btn_ans3 waves-effect waves-green btn-small white"><i class="black-text material-icons">add</i></button>
+            </div>
+            <div class="col s12 m2 right"><br><button id="submit" class="btn light-blue">제출하기</button></div>
+
+        {% if qa_list != None %}
+            <div class="card-panel show-qa">
+
+            </div>
+        {% endif %}
+
+    </div>
+
+
+
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4 id="popup_title"> 제출 시 유의사항 </h4>
+            <p id="popup_content">
+            <h6>1. 질문</h6>
+            - 물음표가 포함된 질문 형식(의문문)이어야 합니다.<br>
+            - 다른 제약 사항은 없습니다.<br>
+            <h6>2. 정답</h6>
+            - 키보드로 직접 입력할 수 없고, 본문을 드래그해서 입력해야 합니다.<br>
+            - 정답의 내용을 드러내는 필수적인 단어들 외에 부가적인 표현들은 제외해야 합니다.<br>
+            - 정답으로 입력한 문장의 마지막 단어에서 첫 글자를 제외한 나머지 글자들만 지우거나 되돌릴 수 있습니다. (불필요한 조사 등을 지우지 위한 목적)<br>
+            - 하나의 질문에 대해 답변이 여러 가지가 나오는 경우, '+' 버튼을 통해 중복 답변을 제출할 수 있습니다.<br>
+            - 질문에 대해 정답을 찾을 수 없다면, NO_ANSWER를 체크하여 제출합니다. </p>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat">알겠습니다.</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="../static/script/materialize.min.js"></script>
+<script src="../static/script/submit.js"></script>
 <script> var data = {{ data | tojson |safe }};</script>
 <script> var data_JSON = {{ bible | tojson | safe }}</script>
+</body>
 </html>

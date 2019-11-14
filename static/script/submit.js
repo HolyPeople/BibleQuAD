@@ -1,6 +1,9 @@
-var answer_back_up; // 정답 내용 백업
-var count = 0; // 지우고 되돌리기 index
+var answer_back_up = []; // 정답 내용 백업
+var count = []; // 지우고 되돌리기 index
 var s1, s2, s3, s4; // 셀렉터 값
+var multiple_answer_box = []; // 중복 답변란
+var mab_num = 0; // 중복 답변란 개수
+var focused_box = 0; // 포커스된 답변란의 index
 
 function convertIndexLeft(index, array) { // index번째 문자가 포함된 단어의 왼쪽 index 추출
     var sum = 0;
@@ -42,23 +45,80 @@ function delete_dot(str) { // '.' 제거
     return output;
 }
 
-function erase() {
-    var input = document.getElementById('answer');
-    var answer = input.value;
+function erase(event) {
+    var tar = event.target;
+    var parent = $('#QA_container');
+    var child_index = Array.prototype.indexOf.call(parent.children(), tar) - 1; // 답변란 index
+    if (child_index == -2)
+        child_index = Array.prototype.indexOf.call(parent.children(), tar.parentElement) - 1;
+    var input_to_erase = parent.children().eq(child_index);
+    var answer = input_to_erase.val();
     var array = makeArray(answer);
-    if (array[array.length - 1] === 1) { // 한 글자 남았을 때
+    if (array[array.length - 1] == 1) { // 한 글자 남았을 때
         alert('더 이상 지울 수 없습니다.');
         return;
     }
-    count--;
-    input.value = answer_back_up.substring(0, answer_back_up.length + count);
+    var i = Math.floor(child_index / 4);
+    if(answer_back_up[i] == null) {
+        return;
+    }
+    count[i]--;
+    input_to_erase.get(0).value = answer_back_up[i].substring(0, answer_back_up[i].length + count[i]);
 }
 
-function recover() {
-    var input = document.getElementById('answer');
-    input.value = answer_back_up.substring(0, answer_back_up.length + count);
-    if (count === 0) return;
-    count++;
+function recover(event) {
+    var tar = event.target;
+    var parent = $('#QA_container');
+    var child_index = Array.prototype.indexOf.call(parent.children(), tar) - 2; // 답변란 index
+    if (child_index == -3)
+        child_index = Array.prototype.indexOf.call(parent.children(), tar.parentElement) - 2;
+    var input_to_recover = parent.children().eq(child_index);
+    var i = Math.floor(child_index / 4);
+    if(answer_back_up[i] == null) {
+        return;
+    }
+    input_to_recover.get(0).value = answer_back_up[i].substring(0, answer_back_up[i].length + count[i]);
+    if (count[i] == 0) return;
+    count[i]++;
+}
+
+function ans_box_listener(event) {
+    console.log(event.target)
+    var parent = $('#QA_container'); // 삭제 버튼의 parent
+    var box_index = Array.prototype.indexOf.call(parent.children(), event.target);
+    focused_box = box_index;
+}
+
+function del_btn_listener(event) {
+    var tar_btn = event.target; // 중복 답변란 + 삭제 버튼
+    var parent = $('#QA_container'); // 삭제 버튼의 parent
+    var btn_index = Array.prototype.indexOf.call(parent.children(), tar_btn); // 누른 버튼의 index
+    if (btn_index == -1) {
+        btn_index = Array.prototype.indexOf.call(parent.children(), tar_btn.parentElement);
+    }
+    parent.children().eq(btn_index - 3).remove();
+    parent.children().eq(btn_index - 3).remove();
+    parent.children().eq(btn_index - 3).remove();
+    parent.children().eq(btn_index - 3).remove();
+    var index = (btn_index - 3) / 4;
+    remove_shift(multiple_answer_box, index, mab_num);
+    remove_shift(answer_back_up, index, mab_num);
+    remove_shift(count, index, mab_num);
+    mab_num--; // 중복 답변란 개수 --
+}
+
+function add() {
+    if (mab_num == 9) return; // 중복 답변은 10개로 제한
+    // 중복 답변란 추가
+    multiple_answer_box[mab_num] = $('<input class="col s9 " onclick="ans_box_listener(event)" type="text" name="answer'+mab_num+'" id="answer'+mab_num+'" readonly="true" placeholder="정답을 드래그 하여 선택해 주세요">').appendTo('#QA_container');
+    // 지우기 버튼 추가
+    var back_btn = $('<button onclick="erase(event)" class="col s1 btn_ans1 waves-effect waves-red btn-small white"><i class="black-text material-icons">keyboard_backspace</i></button>').appendTo('#QA_container');
+    // 복원 버튼 추가
+    var rec_btn = $('<button onclick="recover(event)" class="col s1 btn_ans2 waves-effect waves-yellow btn-small white"><i class="black-text material-icons">restore</i></button>').appendTo('#QA_container');
+    // 삭제 버튼 추가
+    var del_btn = $('<button onclick="del_btn_listener(event)" class="col s1 btn_ans3 waves-effect waves-red btn-small white"><i class="black-text material-icons">delete_forever</i></button>').appendTo('#QA_container');
+
+    mab_num++; // 중복 답변란 개수 ++
 }
 
 function find_paragraph(search) {
@@ -66,16 +126,16 @@ function find_paragraph(search) {
     var result = null;
 
     $.ajax({
-        type : "GET",
-        dataType : "text",
-        async : false,
-        data : {book : search[1], chapter : search[2], verse: search[3]},
-        url : "/submit/paragraph",
+        type: "GET",
+        dataType: "text",
+        async: false,
+        data: { book: search[1], chapter: search[2], verse: search[3] },
+        url: "/submit/paragraph",
         success: function (data) {
             result = JSON.parse(data)
             return result;
         },
-        error : function (e) {
+        error: function (e) {
             alert('서버 연결 도중 에러발생' + e);
         }
     })
@@ -95,25 +155,42 @@ function append_options_by_array(selector_num, arr) {
     for (let i = 0; i < arr.length; i++) {
         $(id).append(new Option(arr[i]));
     }
+    $('select').formSelect();
+}
+
+function remove_shift(array, index, size) { // 배열에서 remove and shift
+    let i;
+    for (i = index; i < size; i++) {
+        array[i] = array[i + 1];
+    }
+    array[i] = null;
 }
 
 $(document).ready(function () {
+    $('.btn_ans1').click(erase);
+    $('.btn_ans2').click(recover);
+    $('.btn_ans3').click(add);
+
+    $('select').formSelect();
+      $('.sidenav').sidenav();
+    $('.modal').modal();
+
     // 드래그 시 자동으로 답변란 채워짐
     $('#context').click(function () {
-        count = 0;
+        var i = Math.floor(focused_box / 4);
+        count[i] = 0;
         var selected = getSelection();
         var arr = makeArray(this.innerHTML);
         var offset_min = convertIndexLeft(Math.min(selected.anchorOffset, selected.focusOffset) + 1, arr);
         var offset_max = convertIndexRight(Math.max(selected.anchorOffset, selected.focusOffset) - 1, arr);
         if (!offset_max) offset_max = 0; // 예외 처리
         var sentence = this.innerHTML.substring(offset_min, offset_max);
-        var range  = selected.getRangeAt(0);
+        var range = selected.getRangeAt(0);
         range.setStart(selected.anchorNode, offset_min);
         range.setEnd(selected.focusNode, offset_max);
         sentence = delete_dot(sentence);
-        var answer_input = document.getElementById('answer'); // 정답란
-        answer_input.value = sentence;
-        answer_back_up = sentence;
+        $('#QA_container').children().eq(focused_box).val(sentence); // 답변 채우기
+        answer_back_up[i] = sentence;
     });
 
     // 단락 검색
@@ -122,14 +199,13 @@ $(document).ready(function () {
         var outline = $('#outLine');
         var bible_num = $('#bible_num');
         var content = $('#context');
-        $('.selector').each(function (index, item) {
+        $('.selection').each(function (index, item) {
             search.push($(item).val());
         });
         if (search[3] === '-') {
             return;
         }
         var result = find_paragraph(search);
-        console.log(result)
 
         // 검색된 단락이 없을 때
         if (result == null) {
@@ -178,5 +254,13 @@ $(document).ready(function () {
             verse.push(i);
         }
         append_options_by_array(4, verse);
+    });
+
+    $('#submit').click(function () {
+        var answers = [$('#answer').val()]
+        for (var i = 0; i < mab_num; i++) {
+            answers.push(multiple_answer_box[i].value)
+        }
+        alert(answers);
     });
 });

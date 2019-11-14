@@ -17,12 +17,6 @@ def index():
         return render_template('main.html', data={'uuid': session['uuid']}, btn='submit', n_qa=0)
     return render_template('main.html', data={'uuid': None}, btn='login', n_qa=0)
 
-
-@app.route('/description')
-def description():
-    return render_template('description.html')
-
-
 @app.route('/login')
 def login():
     if 'uuid' in session:
@@ -78,7 +72,7 @@ def logout():
 def submit():
     if 'uuid' not in session:
         return redirect(url_for('login'))
-    return render_template('submit-10.html', bible=Bible.getChapter(), data={'uuid': session['uuid']})
+    return render_template('submit-10.html', bible=Bible.getChapter(), data={'uuid': session['uuid']}, qa_list=None)
 
 
 @app.route('/join', methods=['GET', 'POST'])
