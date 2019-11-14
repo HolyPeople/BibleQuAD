@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>QA Test Page</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Hi+Melody|Jomolhari|Literata|Nanum+Myeongjo|Song+Myung&display=swap" rel="stylesheet">
+    <link href="../static/style/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="../static/style/test.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+        <a id="logo-container" href="/" class="brand-logo">BQuAD</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href = /help?account>계정 관리</a></li>
+            <li><a href = /submit>QA 제출</a></li>
+            <li><a href = /report>오류 보고</a></li>
+        </ul>
+        <ul class="right hide-on-small-and-down hide-on-large-only">
+            <li><a href = /submit>QA 제출</a></li>
+        </ul>
+        <ul id="nav-mobile" class="sidenav">
+            <li><a href = /help?account>계정 관리</a></li>
+            <li><a href = /submit>QA 제출</a></li>
+            <li><a href = /report>오류 보고</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+<br><br>
+<div class="container row" >
+    <div class="input-field col s4">
+        <select id="s1">
+            <optgroup label="team 1">
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+            </optgroup>
+            <optgroup label="team 2">
+                <option value="3">Option 3</option>
+                <option value="4">Option 4</option>
+            </optgroup>
+        </select>
+        <label for="s1">성경</label>
+    </div>
+    <div class="input-field col s3">
+        <select id="s2">
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+        </select>
+        <label for="s2">장</label>
+    </div>
+    <div class="input-field col s3">
+        <select id="s3">
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+        </select>
+        <label for="s3">절</label>
+    </div>
+    <div class="col s1">
+        <br>
+        <a class="waves-effect waves-orange white btn-small"><i class="blue-text material-icons center">search</i></a>
+    </div>
+    <!--
+    <div>
+        <div class="search_condition">
+            <select id="s1" style="width:5.5%" class="selector font">
+                <option selected>구/신약</option>
+            </select>
+            <select id="s2" style="width:9%" class="selector font">
+                <option selected>성경</option>
+            </select>
+            <select id="s3" style="width:3%" class="selector font">
+                <option selected>-</option>
+            </select>
+            <label class="font" style="font-size: 1.6vw;">장</label>
+            <select id="s4" style="width:3%" class="selector font">
+                <option selected>-</option>
+            </select>
+            <label class="font" style="font-size: 1.6vw;">절</label>
+            <img id='img_search' src="images/search_img.png" style="margin-left: 0.6%"/>
+        </div>
+        <div class="container" style="margin:1%">
+            <div id="title">
+                <div id="outLine" class="font">단락 제목</div>
+                <div id="bible_num" class="font">(- -:- ~ -:-)</div>
+            </div>
+            <div id="context" class="font"> * '장/절'을 선택해주세요. (창세기 1:1~2:3 / 창세기 2:4~2:25) </div>
+            <div class="qa">
+                <form action="/send" method="post">
+                    <div>
+                        <label class="input_label font"> 질문 </label>
+                        <input class="input_text font" id="question" type="text" name="question"
+                               value="" onkeypress="focus_move(event)" placeholder="질문을 입력해주세요"/>
+                        <label id="ok" onclick="submit()" class="font" style="margin-left: 0.4%;">확인</label>
+                    </div>
+                    <div style="margin-top: 0.8%;">
+                        <label class="input_label font"> 답변 </label>
+                        <input class="input_text font" id="answer" type="text"
+                               value="" readonly='true' placeholder="답변을 예측합니다"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    -->
+</div>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="../static/script/materialize.min.js"></script>
+<script src="../static/script/test.js"></script>
+</body>
+</html>
