@@ -221,10 +221,6 @@ a {
     margin-left: 0.6%
 }
 
-.show_qa {
-    padding: 10px;
-    margin: 30px;
-}
 
 #q_list {
     font-size: 17px;
@@ -240,11 +236,10 @@ a {
 
 #scrollbox {
     overflow-y: auto;
-    width: 100%;
+    width: 100%-2px;
     height: 200px;
     border-radius: 3px;
     border: solid 2px #ebeded;
-    padding: 4px;
 }
 
 #img_search {
