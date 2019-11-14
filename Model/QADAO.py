@@ -32,44 +32,38 @@ class UserDAO:
 
     # Create User
     def createQA(self, qa):
+        answers_id = uuid.uuid4().hex
         sql = ("INSERT INTO " +
-               "qa(bible_id, question, answer, uuid) " +
+               "qas(paragraph_id, question, is_impossible, answers, user_id) " +
                "VALUES " +
-               "(%s, %s, %s, %s)")
-        self.cursor.execute(sql, (qa.bible_id,
+               "(%s, %s, %s, %s, %s)")
+        self.cursor.execute(sql, (qa.paragraph_id,
                                   qa.question,
-                                  qa.answer,
-                                  qa.uuid
+                                  qa.is_impossible,
+                                  answers_id,
+                                  qa.user_id,
                                   )
                             )
         self.conn.commit()
 
-    # Read User
-    def readAnswerByQuestion(self, question):
-        return self.readAnswer('question', question)
-
-    def readAnswerBybible(self, bible_id):
-        return self.readAnswer('bible_id', bible_id)
-
-    def readAnswer(self, key, value):
-        sql = "SELECT * from user WHERE {0}=%s".format(key)
-        execute_result = self.cursor.execute(sql, value)
-        result = self.cursor.fetchone()
-        qa = None
-        if execute_result != 0:
-            qa = QA(result[0], result[1], result[2], result[3])
-            print(qa.question, qa.answer)
-        else:
-            return None
-        return qa
-
-    # Update User
-    def updateAnswer(self, user):
-
-        pass
-
-    # Delete User
-    def deleteAnswer(self, bible_id, question):
-        sql = "DELETE FROM user WHERE {0}='{1}'".format(bible_id, question)
+    def __readAnswersByID(self, answers_id):
+        answers = []
+        sql = 'SELECT * FROM answers WHERE id='+answers_id
         self.cursor.execute(sql)
-        self.conn.commit()
+        results = self.cursor.fetchall()
+        for result in results:
+            answers.append({'text': result[1], 'answer_start': result[2]})
+        return answers
+
+    def readQAByParagraphID(self, p_id):
+        qas = []
+        sql = 'SELECT * FROM qas WHERE paragraph_id=' + p_id + ' ORDER BY id DESC LIMIT 5'
+        self.cursor.execute(sql)
+        results = self.cursor.fetchall()
+        for result in results:
+            qas.append(QA(result[0], result[1], result[2], result[4], result[5]))
+
+        for qa in qas:
+            qa.answers = self.__readAnswersByID(qa.answers)
+
+        return qas
