@@ -26,3 +26,12 @@ font-weight:bold;
 color: limegreen;
 font-size:larger;
 }
+
+#logo_btn{
+    background: url("images/icon.png") no-repeat;
+    width:280px;
+    height:180px;
+	border: none;
+    background-size: 100%;
+	vertical-align: middle;
+}
