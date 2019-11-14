@@ -10,12 +10,14 @@
     <link rel="stylesheet" href="../static/style/materialize.css">
     <link rel="stylesheet" href="../static/style/login.css">
 </head>
+
 <body>
 <!-- container -->
 <div class="login-container">
-    <form action="/session" accept-charset="UTF-8" method="post" class="col s12">
+
+    <form action="/session" accept-charset="UTF-8" method="post" class="col s12 subbox1">
         <div class="login-header" style="margin: 40px">
-            <img src="../static/style/images/icon.png" width="50%" alt="logo">
+            <img src="../static/style/images/icon.png" width="70%" alt="logo">
         </div>
         <dliv class="js-flash-container">
 
@@ -34,9 +36,12 @@
             <input type="submit" name="commit" value="로그인" class="btn-large" style="float: right; width: 100%; margin-bottom: 40px">
         </div>
     </form>
+
     <div class="find_info" style="text-align: center">
         </span> <a target="_blank" id="pwQuery" href="/help?key=password">비밀번호 찾기</a> <span class="bar" aria-hidden="true">|</span> <a target="_blank" id="join" href="/join">회원가입</a>
     </div>
+
 </div>
 </body>
+
 </html>
