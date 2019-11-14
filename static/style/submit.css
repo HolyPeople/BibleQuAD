@@ -358,3 +358,44 @@ a {
     color: black;
     line-height: 150%
 }
+
+#check{
+    
+    float:left; 
+  }
+  
+#checkbox1{
+    width:1px; 
+    height:1px; 
+    padding:0; 
+    border:0 none; 
+    margin:0; 
+    position:absolute; 
+    left:0; 
+    top:0; 
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+  }
+  
+#checkbox_lb{
+    height:15px; 
+    line-height:15px; 
+    padding-left:20px; 
+    display:inline ; 
+    background:url(http://hcs1105.com/wp/wp-content/themes/hcs1105/images/checkbox1.png) no-repeat 0 0; 
+    font-size:15px; 
+    vertical-align:middle; 
+    cursor:pointer;
+  }
+  
+ #checkbox1:checked + #checkbox_lb{
+    background-position: 0 -15px;
+  }
+
+  #checkboxArea {
+      float:right;
+  }
+
+  #ans{
+    margin-top: 2%;
+  }
