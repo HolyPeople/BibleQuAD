@@ -5,7 +5,8 @@ var multiple_answer_box = []; // 중복 답변란
 var mab_num = 0; // 중복 답변란 개수
 var focused_box = 0; // 포커스된 답변란의 index
 var answer_starts = [];
-var result;
+var result = null;
+var no_answer = false;
 
 function convertIndexLeft(index, array) { // index번째 문자가 포함된 단어의 왼쪽 index 추출
     var sum = 0;
@@ -85,7 +86,6 @@ function recover(event) {
 }
 
 function ans_box_listener(event) {
-    console.log(event.target)
     var parent = $('#QA_container'); // 삭제 버튼의 parent
     var box_index = Array.prototype.indexOf.call(parent.children(), event.target);
     focused_box = box_index;
@@ -110,16 +110,33 @@ function del_btn_listener(event) {
     mab_num--; // 중복 답변란 개수 --
 }
 
+function checkbox_listener(event) {
+    if ($('#checkbox_input').is(':checked')) { // checked
+        no_answer = true;
+        while (true) { // 중복 답변 다 삭제하기
+            if ($("#QA_container").children().length == 4) break;
+            var delete_btn = $("#QA_container").children().eq(7);
+            delete_btn.trigger("click");
+        }
+        $("#answer").val("(없음)");
+    }
+    else { // unchecked
+        no_answer = false;
+        $("#answer").val("");
+    }
+}
+
 function add() {
+    if (no_answer == true) return;
     if (mab_num == 9) return; // 중복 답변은 10개로 제한
     // 중복 답변란 추가
     multiple_answer_box[mab_num] = $('<input class="col s9 " onclick="ans_box_listener(event)" type="text" name="answer'+mab_num+'" id="answer'+mab_num+'" readonly="true" placeholder="정답을 드래그 하여 선택해 주세요">').appendTo('#QA_container');
     // 지우기 버튼 추가
-    var back_btn = $('<button onclick="erase(event)" class="col s1 btn_ans1 waves-effect waves-red btn-small white"><i class="black-text material-icons">keyboard_backspace</i></button>').appendTo('#QA_container');
+    $('<button onclick="erase(event)" class="col s1 btn_ans1 waves-effect waves-red btn-small white"><i class="black-text material-icons">keyboard_backspace</i></button>').appendTo('#QA_container');
     // 복원 버튼 추가
-    var rec_btn = $('<button onclick="recover(event)" class="col s1 btn_ans2 waves-effect waves-yellow btn-small white"><i class="black-text material-icons">restore</i></button>').appendTo('#QA_container');
+    $('<button onclick="recover(event)" class="col s1 btn_ans2 waves-effect waves-yellow btn-small white"><i class="black-text material-icons">restore</i></button>').appendTo('#QA_container');
     // 삭제 버튼 추가
-    var del_btn = $('<button onclick="del_btn_listener(event)" class="col s1 btn_ans3 waves-effect waves-red btn-small white"><i class="black-text material-icons">delete_forever</i></button>').appendTo('#QA_container');
+    $('<button onclick="del_btn_listener(event)" class="col s1 btn_ans3 waves-effect waves-red btn-small white"><i class="black-text material-icons">delete_forever</i></button>').appendTo('#QA_container');
 
     mab_num++; // 중복 답변란 개수 ++
 }
@@ -180,6 +197,7 @@ $(document).ready(function () {
 
     // 드래그 시 자동으로 답변란 채워짐
     $('#context').click(function () {
+        if (no_answer == true) return;
         var i = Math.floor(focused_box / 4);
         count[i] = 0;
         var selected = getSelection();
@@ -260,13 +278,40 @@ $(document).ready(function () {
         append_options_by_array(4, verse);
     });
 
+    $('#question').keyup(function () {
+       var str =  $('#question').val().trim();
+       if (str.length == 0) {
+           $('#submit').attr('disabled', 'disabled');
+       } else {
+           $('#submit').removeAttr('disabled');
+       }
+    });
+
     $('#submit').click(function () {
-        var answers = [{text: $('#answer').val(), answer_start: answer_starts[0]}];
-        var question = $('#question').val();
-        for (var i = 0; i < mab_num; i++) {
-            answers.push({text: multiple_answer_box[i].val(), answer_start: answer_starts[i + 1]});
+        if(result == null) {
+            alert("본문도 선택안하고 정답을 어떻게 알죠?")
+            return;
         }
-        console.log(JSON.stringify(result));
-        console.log(JSON.stringify(answers));
+        var question = $('#question').val();
+        var qa = {is_impassible : false,
+            question : question,
+            answers : [],
+            paragraph_id : result['id']}
+        if (!no_answer) {
+            if ($('#answer').val().trim().length == 0) {
+                alert("정답을 선택해 주세요!");
+                return;
+            }
+            var answers = [{text: $('#answer').val(), answer_start: answer_starts[0]}];
+            for (var i = 0; i < mab_num; i++) {
+                if (multiple_answer_box[i].val().trim().length != 0)
+                    answers.push({text: multiple_answer_box[i].val(), answer_start: answer_starts[i + 1]});
+            }
+            qa['answers'] = answers;
+        } else {
+            qa['is_impassible'] = true
+        }
+
+        console.log(JSON.stringify(qa));
     });
 });

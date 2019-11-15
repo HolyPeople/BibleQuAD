@@ -107,5 +107,12 @@ def getParagraph():
     return Bible.getParagraph(book, chapter, verse)
 
 
+@app.route('/submit/qa')
+def getQas():
+    paragraph_id = request.args['paragraph_id']
+    print(paragraph_id)
+    return
+
+
 if __name__ == '__main__':
     app.run()

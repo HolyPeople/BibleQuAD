@@ -72,46 +72,62 @@
             <div class="col s9">
                 <label for="question" class="blue-text lighten-2 flow-text">질문 <a href="#modal1" class="btn-floating white waves-effect waves-orange z-depth-0 modal-trigger"><i class="black-text material-icons">help_outline</i></a> </label><input type="text" name="" id="question" placeholder="질문을 입력해 주세요">
             </div>
-            <div class="col s9">
-                <label for="answer" class="blue-text lighten- flow-text">정답</label>
-             </div>
+            <div class="col s12">
+                <label for="answer" class="blue-text lighten- flow-text">정답  </label>
+                <label>
+                    <input id="checkbox_input" class="filled-in" type="checkbox" onclick="checkbox_listener(event)"/>
+                    <span id="checkbox_span">: No Answer</span>
+                </label>
+            </div>
             <div id="QA_container" class="row">
                 <input class="col s9 " onclick="ans_box_listener(event)" type="text" name="answer" readonly="true" id="answer" placeholder="정답을 드래그 하여 선택해 주세요">
                 <button class="col s1 btn_ans1 waves-effect waves-red btn-small white"><i class="black-text material-icons">keyboard_backspace</i></button>
                 <button class="col s1 btn_ans2 waves-effect waves-yellow btn-small white"><i class="black-text material-icons">restore</i></button>
                 <button class="col s1 btn_ans3 waves-effect waves-green btn-small white"><i class="black-text material-icons">add</i></button>
             </div>
-            <div class="col s12 m2 right"><br><button id="submit" class="btn light-blue">제출하기</button></div>
+            <div class="col s12 m2 right"><br><button id="submit" disabled="disabled" class="btn light-blue">제출하기</button></div>
 
-        {% if qa_list != None %}
-            <div class="card-panel show-qa">
+            {% if qa_list != None %}
+                <div class="card-panel show-qa">
 
+                </div>
+            {% endif %}
+
+        </div>
+
+
+
+
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <h4 id="popup_title"> 제출 시 유의사항 </h4>
+                <p id="popup_content">
+                <h6>1. 질문</h6>
+                - 물음표가 포함된 질문 형식(의문문)이어야 합니다.<br>
+                - 다른 제약 사항은 없습니다.<br>
+                <h6>2. 정답</h6>
+                - 키보드로 직접 입력할 수 없고, 본문을 드래그해서 입력해야 합니다.<br>
+                - 정답의 내용을 드러내는 필수적인 단어들 외에 부가적인 표현들은 제외해야 합니다.<br>
+                - 정답으로 입력한 문장의 마지막 단어에서 첫 글자를 제외한 나머지 글자들만 지우거나 되돌릴 수 있습니다. (불필요한 조사 등을 지우지 위한 목적)<br>
+                - 하나의 질문에 대해 답변이 여러 가지가 나오는 경우, '+' 버튼을 통해 중복 답변을 제출할 수 있습니다.<br>
+                - 질문에 대해 정답을 찾을 수 없다면, NO_ANSWER를 체크하여 제출합니다. </p>
             </div>
-        {% endif %}
-
-    </div>
-
-
-
-
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <h4 id="popup_title"> 제출 시 유의사항 </h4>
-            <p id="popup_content">
-            <h6>1. 질문</h6>
-            - 물음표가 포함된 질문 형식(의문문)이어야 합니다.<br>
-            - 다른 제약 사항은 없습니다.<br>
-            <h6>2. 정답</h6>
-            - 키보드로 직접 입력할 수 없고, 본문을 드래그해서 입력해야 합니다.<br>
-            - 정답의 내용을 드러내는 필수적인 단어들 외에 부가적인 표현들은 제외해야 합니다.<br>
-            - 정답으로 입력한 문장의 마지막 단어에서 첫 글자를 제외한 나머지 글자들만 지우거나 되돌릴 수 있습니다. (불필요한 조사 등을 지우지 위한 목적)<br>
-            - 하나의 질문에 대해 답변이 여러 가지가 나오는 경우, '+' 버튼을 통해 중복 답변을 제출할 수 있습니다.<br>
-            - 질문에 대해 정답을 찾을 수 없다면, NO_ANSWER를 체크하여 제출합니다. </p>
+            <div class="modal-footer">
+                <a class="modal-close waves-effect waves-green btn-flat">알겠습니다.</a>
+            </div>
         </div>
-        <div class="modal-footer">
-            <a class="modal-close waves-effect waves-green btn-flat">알겠습니다.</a>
+    <div id="qa_modal" class="modal">
+            <div class="modal-content">
+                <h4 id="qa_popup_title">&lt;이전 QA목록&gt;</h4>
+                <p id="qa_popup_content"></p>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close waves-effect waves-green btn-flat">돌아가기</a>
+            </div>
         </div>
     </div>
+
+
 </div>
 
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
