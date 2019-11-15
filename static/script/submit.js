@@ -152,7 +152,7 @@ function find_paragraph(search) {
         data: { book: search[1], chapter: search[2], verse: search[3] },
         url: "/submit/paragraph",
         success: function (data) {
-            result = JSON.parse(data)
+            result = JSON.parse(data);
             return result;
         },
         error: function (e) {
@@ -293,7 +293,7 @@ $(document).ready(function () {
             return;
         }
         var question = $('#question').val();
-        var qa = {is_impassible : false,
+        var qa = {is_impossible : false,
             question : question,
             answers : [],
             paragraph_id : result['id']}
@@ -309,9 +309,23 @@ $(document).ready(function () {
             }
             qa['answers'] = answers;
         } else {
-            qa['is_impassible'] = true
+            qa['is_impossible'] = true
         }
 
-        console.log(JSON.stringify(qa));
+        $.ajax({
+            url: '/submit/qa',
+            type: 'POST',
+            dataType: 'text/json',
+            data: {json:JSON.stringify(qa)},
+            complete: function () {
+                while (true) { // 중복 답변 다 삭제하기
+                if ($("#QA_container").children().length == 4) break;
+                var delete_btn = $("#QA_container").children().eq(7);
+                delete_btn.trigger("click");
+                }
+                $("#answer").val("");
+                $("#question").val("");
+            }
+        })
     });
 });

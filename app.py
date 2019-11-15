@@ -1,7 +1,7 @@
-from flask import Flask, render_template, session, redirect, url_for, request
-import datetime, re
+from flask import Flask, render_template, session, redirect, url_for, request, abort
+import re, json
 from Model.AESCipher import AESCipher
-from Service import Auth, Bible, QATest
+from Service import Auth, Bible, QATest, QASubmit
 
 app = Flask(__name__)
 app.templates_auto_reload = True
@@ -107,11 +107,16 @@ def getParagraph():
     return Bible.getParagraph(book, chapter, verse)
 
 
-@app.route('/submit/qa')
+@app.route('/submit/qa', methods=['GET', 'POST'])
 def getQas():
-    paragraph_id = request.args['paragraph_id']
-    print(paragraph_id)
-    return
+    if 'uuid' not in session:
+        return abort(403)
+    if request.method == 'GET':
+        paragraph_id = request.args['paragraph_id']
+        print(paragraph_id)
+        return "qas"
+    else:
+        return QASubmit.submitQA(json.loads(request.form['json']), session['uuid'])
 
 
 if __name__ == '__main__':

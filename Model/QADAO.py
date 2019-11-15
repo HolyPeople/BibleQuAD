@@ -4,7 +4,7 @@ import datetime
 from Model.QA import QA
 
 
-class UserDAO:
+class QADAO:
     def __init__(self):
         try:
             self.configure = {}
@@ -33,10 +33,10 @@ class UserDAO:
     # Create User
     def createQA(self, qa):
         answers_id = uuid.uuid4().hex
-        sql = ("INSERT INTO " +
-               "qas(paragraph_id, question, is_impossible, answers, user_id) " +
-               "VALUES " +
-               "(%s, %s, %s, %s, %s)")
+        sql = "INSERT INTO " \
+              "qas(paragraph_id, question, is_impossible, answers, user_id) " \
+              "VALUES " \
+              "(%s, %s, %s, %s, %s)"
         self.cursor.execute(sql, (qa.paragraph_id,
                                   qa.question,
                                   qa.is_impossible,
@@ -46,9 +46,17 @@ class UserDAO:
                             )
         self.conn.commit()
 
+        sql = "INSERT INTO " \
+              "answers(id, text, answer_start) " \
+              "VALUES " \
+              "(%s, %s, %s)"
+        for answer in qa.answers:
+            self.cursor.execute(sql, (answers_id, answer['text'], answer['answer_start']))
+            self.conn.commit()
+
     def __readAnswersByID(self, answers_id):
         answers = []
-        sql = 'SELECT * FROM answers WHERE id='+answers_id
+        sql = 'SELECT * FROM answers WHERE id=' + answers_id
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
         for result in results:
